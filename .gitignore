@@ -1,0 +1,29 @@
+# 研修資料本体（現状は git 管理外）
+/docs
+
+# デモ実行中に生成される HTML レポート（onboarding.html など）
+*.html
+
+# 依存とビルド成果物 — setup.sh で再生成できる
+node_modules/
+dist/
+*.tsbuildinfo
+npm-debug.log*
+
+# guardrails.sh が demo/ に書き出すもの。
+# 実体は guardrails/ 側にあるので、こちらは常に生成物。
+.claude/
+
+# hook-trace が吐くログ（demo/.claude-instructions.log）
+.claude-instructions.log
+
+# ローカル環境変数。
+# demo/.env は hook-secrets のデモに必要なフィクスチャなので意図的に追跡する
+#（中身はダミー値のみ）。
+.env.local
+.env.*.local
+
+# エディタ / OS
+.vscode/
+.idea/
+.DS_Store

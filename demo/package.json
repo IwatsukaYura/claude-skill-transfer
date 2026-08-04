@@ -1,0 +1,17 @@
+{
+  "name": "orders-api",
+  "version": "0.4.2",
+  "private": true,
+  "type": "module",
+  "description": "研修デモ用の注文API。意図的に摩擦とバグを仕込んである。",
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test dist/tests/*.test.js",
+    "lint": "tsc --noEmit",
+    "check:migrations": "bash scripts/check-migration-sync.sh"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.0"
+  }
+}

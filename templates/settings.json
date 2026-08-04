@@ -1,0 +1,62 @@
+{
+  "//": "プロジェクトの .claude/settings.json のひな形。ワークスペースの信頼を受け入れて初めて有効になる。",
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/guard-secrets.sh",
+            "timeout": 10,
+            "statusMessage": "秘密情報チェック"
+          }
+        ]
+      },
+      {
+        "//": "if は権限ルール構文。ツール名 + 引数で絞り込める",
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(rm *)",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/confirm-rm.sh"
+          }
+        ]
+      }
+    ],
+
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/lint-after-edit.sh",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+
+    "Stop": [
+      {
+        "//": "Stop に matcher は無い。毎回発火する",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/test-gate.sh",
+            "timeout": 180,
+            "statusMessage": "テスト実行中"
+          }
+        ]
+      }
+    ]
+  },
+
+  "permissions": {
+    "allow": ["Bash(npm run *)", "Bash(git status)", "Bash(git diff *)"],
+    "deny": ["Read(./.env)", "Read(./secrets/**)"]
+  }
+}

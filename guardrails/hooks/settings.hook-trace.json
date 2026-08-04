@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "InstructionsLoaded": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/trace-instructions.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
