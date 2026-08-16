@@ -8,7 +8,6 @@
 #
 # レイヤー:
 #   claudemd          CLAUDE.md
-#   rules             path スコープ付き rules
 #   skill             release-check スキル
 #   agent             diff-reviewer サブエージェント
 #   hook-migrations   PreToolUse: 適用済みマイグレーションの書き換えをブロック ★デモ4の主役
@@ -17,8 +16,7 @@
 #   hook-testgate     Stop: テストが通るまで終わらせない
 #   hook-worktree     PreToolUse: 未コミットの作業を破棄する git 操作をブロック（付録）
 #   hook-secrets      PreToolUse: 秘密情報ファイルへの書き込みをブロック（付録）
-#   hook-trace        InstructionsLoaded: どの指示ファイルがいつロードされたか記録（診断用）
-#   hooks             上記フック7種まとめて
+#   hooks             上記フック6種まとめて
 #   all               全部
 #
 # 実体は guardrails/（demo の外）にあり、有効化すると demo/.claude/ にコピーされる。
@@ -30,15 +28,15 @@ cd "$(dirname "$0")"
 SRC="guardrails"
 DST="demo/.claude"
 
-LAYERS=(claudemd rules skill agent hook-migrations hook-worktree hook-tests hook-lint hook-testgate hook-secrets hook-trace)
-HOOK_LAYERS=(hook-migrations hook-worktree hook-tests hook-lint hook-testgate hook-secrets hook-trace)
+LAYERS=(claudemd skill agent hook-migrations hook-worktree hook-tests hook-lint hook-testgate hook-secrets)
+HOOK_LAYERS=(hook-migrations hook-worktree hook-tests hook-lint hook-testgate hook-secrets)
 
 die() { echo "エラー: $*" >&2; exit 1; }
 
 command -v jq >/dev/null 2>&1 || die "jq が必要です。'brew install jq' を実行してください。"
 
 # ---------------------------------------------------------------- 隔離設定
-# 講師個人の ~/.claude/CLAUDE.md や ~/.claude/rules/ がデモに混入すると、
+# 自分の ~/.claude/CLAUDE.md や ~/.claude/rules/ がデモに混入すると、
 # 「ガードレール無し」の状態が再現しない。ここで明示的に除外する。
 write_local_settings() {
   mkdir -p "$DST"
@@ -58,7 +56,6 @@ write_local_settings() {
 enabled() {
   case "$1" in
     claudemd)       [ -f "$DST/CLAUDE.md" ] ;;
-    rules)          [ -d "$DST/rules" ] ;;
     skill)          [ -d "$DST/skills" ] ;;
     agent)          [ -d "$DST/agents" ] ;;
     hook-*)         [ -f "$DST/.enabled-$1" ] ;;
@@ -71,7 +68,6 @@ enable_layer() {
   mkdir -p "$DST"
   case "$layer" in
     claudemd) cp "$SRC/CLAUDE.md" "$DST/CLAUDE.md" ;;
-    rules)    mkdir -p "$DST/rules"  && cp -R "$SRC/rules/."  "$DST/rules/" ;;
     skill)    mkdir -p "$DST/skills" && cp -R "$SRC/skills/." "$DST/skills/" ;;
     agent)    mkdir -p "$DST/agents" && cp -R "$SRC/agents/." "$DST/agents/" ;;
     hook-*)
