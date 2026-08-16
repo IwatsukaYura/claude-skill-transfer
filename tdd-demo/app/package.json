@@ -1,0 +1,16 @@
+{
+  "name": "invoice-tdd",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "研修のTDDデモ用。請求金額の計算をTDDで実装する。",
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build --silent && node --test 'dist/tests/**/*.test.js'",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.0"
+  }
+}
