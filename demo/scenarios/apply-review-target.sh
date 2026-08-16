@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
-# デモ3（Subagent）の【フォールバック】用。
+# diff-reviewer サブエージェント用のレビュー対象を用意する。
 #
 # ★注意: これは「自己レビュー vs 新鮮な文脈」の比較には使えない。
 #   スクリプトが作った差分は、メインセッションにとっても初見なので、
 #   取り除くべきバイアスがそもそも存在しない。
-#   比較をやるなら台本のデモ3-④（誤った前提を与えて実装させる）を使う。
 #
-# このスクリプトの用途は、diff-reviewer の出力形式と tools 制約を
-# 手早く見せるためのレビュー対象を用意することだけ。
-#
-# 中に3つの問題が仕込んである（await漏れ / 所有権チェック漏れ / 監査ログ漏れ）。
+# 用途は diff-reviewer の出力形式と tools 制約を確認することだけ。
 #
 #   ./scenarios/apply-review-target.sh        差分を作る
 #   ./scenarios/apply-review-target.sh reset  元に戻す
@@ -91,12 +87,6 @@ echo "レビュー対象の差分を作りました。"
 echo
 npm test 2>&1 | grep -E '^# (pass|fail)'
 cat <<'EOS'
-
-仕込んである問題（司会者用・参加者には伏せる）:
-  1. db.orders.update() の await 漏れ        → 発行フラグが永続化されない
-  2. 所有権チェック漏れ                       → 他人の領収書を発行・閲覧できる
-  3. audit.recordAccess() 呼び忘れ            → 監査要件違反（rules B-1）
-  4. テストが status 200 しか見ていない       → 上記1〜3を1つも検知しない
 
 この状態で:
   ../guardrails.sh only agent してから

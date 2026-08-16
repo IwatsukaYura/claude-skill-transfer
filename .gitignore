@@ -27,3 +27,9 @@ npm-debug.log*
 .vscode/
 .idea/
 .DS_Store
+
+# TDDデモのフックが書く状態ファイル
+.tdd-state
+
+# 運用プロセスの手元メモ（配布物ではないので追跡しない）
+templates/摩擦バックログ.md

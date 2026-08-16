@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# 研修の「前日まで」に実行しておくセットアップ。
-# ネットワークが必要なのはここだけ。当日はオフラインでも回る。
+# セットアップ。最初に1回実行する。
+# ネットワークが必要なのはここだけ。以降はオフラインでも回る。
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -45,9 +45,9 @@ cat <<'EOS'
 セットアップ完了。
 
   ./guardrails.sh status      いま何が有効か
-  ./guardrails.sh on rules    1枚だけ有効化
+  ./guardrails.sh only skill  1枚だけ有効化
   ./guardrails.sh off         素の状態に戻す
 
-デモは demo/ をカレントにして claude を起動する:
+demo/ をカレントにして claude を起動する:
   cd demo && claude
 EOS

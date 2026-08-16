@@ -1,35 +1,17 @@
 ---
-# name は省略するとディレクトリ名が使われる
 name: my-skill
-
-# ★最重要。Claude が起動を判断する唯一の材料。
-#   - ユースケースを先頭に書く
-#   - 自分が実際に口にする言い回しを並べる
-#   - 長すぎると一覧表示で切り捨てられる（/doctor で確認できる）
 description: <何をするか>。「<言い方1>」「<言い方2>」と言われたときに使う。<どんな形で返すか>。
 
-# 補完時のヒント
 argument-hint: "[引数の説明]"
-
-# 副作用のある操作は必ず true。自動発火を止め、常時の文脈コストもゼロになる。
-# 例: /deploy /commit /send-slack-message
 disable-model-invocation: true
 
-# / メニューに出さない。背景知識としてだけ持たせたいとき。
-# user-invocable: false
-
-# そのターンだけ権限を事前承認する。次の発言でクリアされる。
-# ${CLAUDE_SKILL_DIR} が使える（v2.1.129+）
+# そのターンだけ権限を事前承認する
 allowed-tools: Bash(npm run *) Read Grep
 
-# このスキル実行中だけ使うツールを外す
+# user-invocable: false   # / メニューに出さない
 # disallowed-tools: AskUserQuestion
-
-# このスキル実行中だけモデルを変える
 # model: haiku
-
-# 隔離コンテキスト（サブエージェント）で実行する
-# context: fork
+# context: fork           # 隔離コンテキストで実行する
 ---
 
 # <スキル名>
@@ -50,8 +32,7 @@ allowed-tools: Bash(npm run *) Read Grep
 
 ### 2. <手順2>
 
-<Claude が推測で辿り着けない、プロジェクト固有の手順をここに書く。
- これが無いなら、そもそもこのスキルは要らないかもしれない>
+<Claude が推測で辿り着けない、プロジェクト固有の手順をここに書く>
 
 ## 報告の形式
 
@@ -64,10 +45,3 @@ allowed-tools: Bash(npm run *) Read Grep
 
 判定: <結論>
 ```
-
-<!--
-長い参照資料はこのファイルに書かず、同じディレクトリの別ファイルに置いて
-@reference.md のように参照する。使うまで文脈を食わない（progressive disclosure）。
-
-引数は $ARGUMENTS / $ARGUMENTS[0] / $0 で受け取れる。
--->
